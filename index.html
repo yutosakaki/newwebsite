@@ -304,45 +304,11 @@
       return "common"; // デフォルト
     }
 
-    // マウスダウン時のイベント
-    pack.addEventListener('mousedown', (e) => {
+    // マウスダウン時のイベントをクリックイベントに変更
+    pack.addEventListener('click', (e) => {
       if (!isPacked || isOpening) return;
       
-      isDragging = true;
-      startX = e.clientX;
-      pack.classList.add('dragging');
-    });
-
-    // マウスムーブ時のイベント
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      
-      dragDistance = e.clientX - startX;
-      
-      // Y方向の動きを無視し、X方向のみドラッグ有効
-      if (dragDistance < 0) dragDistance = 0;
-      
-      // パックの上部を回転させる（X方向のみ）
-      const rotationDegree = Math.min(dragDistance / 2, 90);
-      packTop.style.transform = `rotateX(${rotationDegree}deg)`;
-      
-      // 指定の距離までドラッグしたら開封
-      if (dragDistance >= requiredDragDistance && !isOpening) {
-        openPack();
-      }
-    });
-
-    // マウスアップ時のイベント
-    document.addEventListener('mouseup', () => {
-      if (!isDragging) return;
-      
-      isDragging = false;
-      pack.classList.remove('dragging');
-      
-      // 十分な距離ドラッグされていない場合は元に戻す
-      if (dragDistance < requiredDragDistance && isPacked) {
-        packTop.style.transform = 'rotateX(0deg)';
-      }
+      openPack();
     });
 
     // カードパックを開封する関数
